@@ -18,7 +18,7 @@ uploadArchives {
         mavenDeployer {
             repository(url: "https://infusionsoft.jfrog.io/infusionsoft/third-party-builds") {
                 authentication(
-                        username: System.properties["externalProxyRepositoryUsername"],
+                        userName: System.properties["externalProxyRepositoryUsername"],
                         password: System.properties["externalProxyRepositoryPassword"]
                 )
             }
