@@ -18,8 +18,8 @@ package com.fullcontact.api.libs.fullcontact4j.http;
 import com.fullcontact.api.libs.fullcontact4j.FCConstants;
 import com.fullcontact.api.libs.fullcontact4j.Utils;
 
-import okhttp3.OkHttpClient;
-import okhttp3.OkUrlFactory;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.OkUrlFactory;
 import retrofit.client.*;
 import retrofit.mime.TypedInput;
 import retrofit.mime.TypedOutput;
@@ -37,10 +37,10 @@ public class FCUrlClient implements Client {
     private static final int READ_TIMEOUT_MILLIS = 20 * 1000; // 20s
 
     private static OkHttpClient generateDefaultOkHttp() {
-        return new OkHttpClient.Builder()
-            .connectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
-            .readTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
-            .build();
+        OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        return client;
     }
 
     private Map<String, String> headers = new HashMap<String, String>();

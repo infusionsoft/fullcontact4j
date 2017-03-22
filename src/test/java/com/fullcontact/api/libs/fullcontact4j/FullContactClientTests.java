@@ -7,7 +7,7 @@ import com.fullcontact.api.libs.fullcontact4j.http.person.PersonRequest;
 import com.fullcontact.api.libs.fullcontact4j.http.person.PersonResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.OkHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import org.junit.*;
 import retrofit.client.*;
 import static org.junit.Assert.*;

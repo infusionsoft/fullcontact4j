@@ -13,7 +13,7 @@ import com.fullcontact.api.libs.fullcontact4j.http.misc.DisposableEmailRequest;
 import com.fullcontact.api.libs.fullcontact4j.http.name.*;
 import com.fullcontact.api.libs.fullcontact4j.http.person.PersonRequest;
 
-import okhttp3.OkHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import retrofit.appengine.UrlFetchClient;
 import retrofit.client.Client;
 
@@ -194,6 +194,7 @@ public class FullContact {
         private String authKey;
         private Map<String, String> headers;
         private OkHttpClient httpClient = new OkHttpClient();
+        private OkHttpClient defaultClient = new OkHttpClient();
         private Client client = null;
         private String userAgent = "";
         private String baseUrl = FCConstants.API_BASE_DEFAULT;
@@ -252,9 +253,7 @@ public class FullContact {
          */
         @Deprecated
         public Builder setDefaultClientReadTimeout(Integer timeoutMs) {
-            httpClient = httpClient.newBuilder()
-                .readTimeout(timeoutMs, TimeUnit.MILLISECONDS)
-                .build();
+            defaultClient.setReadTimeout(timeoutMs, TimeUnit.MILLISECONDS);
             return this;
         }
 
@@ -264,9 +263,7 @@ public class FullContact {
          * @deprecated use OkHttpClient.Builder.connectTimeout and the httpClient method on this builder.
          */
         public Builder setDefaultClientConnectTimeout(Integer timeoutMs) {
-            httpClient = httpClient.newBuilder()
-                .connectTimeout(timeoutMs, TimeUnit.MILLISECONDS)
-                .build();
+            defaultClient.setConnectTimeout(timeoutMs, TimeUnit.MILLISECONDS);
             return this;
         }
 
