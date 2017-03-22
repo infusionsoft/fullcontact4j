@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 group = 'com.fullcontact'
-version = '5.3.0_Infusionsoft'
+version = '5.2.0.1_Infusionsoft'
 
 description = """FullContact Java Bindings"""
 
