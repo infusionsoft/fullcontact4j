@@ -31,6 +31,9 @@ public interface FullContactApi {
     @POST(FCConstants.API_ENDPOINT_CARDREADER)
     public void uploadCard(@Header(FCConstants.HEADER_AUTH_ACCESS_TOKEN) String accessToken, @QueryMap Map<String, String> opts, @Body CardReaderUploadRequest.RequestBodyJson bodyJson, Callback<CardReaderUploadConfirmResponse> callback);
 
+    @POST(FCConstants.API_ENDPOINT_CARDREADER)
+    public CardReaderUploadConfirmResponse uploadCard2(@Header(FCConstants.HEADER_AUTH_ACCESS_TOKEN) String accessToken, @QueryMap Map<String, String> opts, @Body CardReaderUploadRequest.RequestBodyJson bodyJson);
+
     @GET(FCConstants.API_ENDPOINT_CARDREADER + "/{id}")
     public void viewCard(@Header(FCConstants.HEADER_AUTH_ACCESS_TOKEN) String accessToken, @QueryMap Map<String, String> opts, @Path("id") String id, Callback<CardReaderFullResponse> callback);
 

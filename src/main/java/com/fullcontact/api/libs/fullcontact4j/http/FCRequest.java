@@ -36,6 +36,10 @@ public abstract class FCRequest<T extends FCResponse> {
      */
     protected abstract void makeRequest(FullContactApi api, Callback<T> callback);
 
+    protected T makeRequest2(FullContactApi api) {
+        return null;
+    }
+
     private String getFullURL(String baseUrl) {
         StringBuilder builder = new StringBuilder();
         String result = baseUrl + "?";

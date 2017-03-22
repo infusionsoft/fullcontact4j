@@ -33,6 +33,13 @@ public class CardReaderUploadRequest extends FCRequest<CardReaderUploadConfirmRe
        api.uploadCard(accessToken, params, body, callback);
     }
 
+    @Override
+    protected CardReaderUploadConfirmResponse makeRequest2(FullContactApi api) {
+        //if accesstoken is null, it is not added to the headers. if it is not null, it replaces API Key header
+        //(see FullContactHttpInterface.DynamicHeaderOkClient)
+        return api.uploadCard2(accessToken, params, body);
+    }
+
     public static class Builder extends WebhookBuilder<Builder, CardReaderUploadRequest> {
 
         private String cardFront;
