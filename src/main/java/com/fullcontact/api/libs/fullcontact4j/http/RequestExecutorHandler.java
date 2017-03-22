@@ -96,6 +96,10 @@ public class RequestExecutorHandler implements FCRequestHandler {
         });
     }
 
+    public <T extends FCResponse> T sendRequest(FullContactApi api, FCRequest<T> req) {
+        return req.makeRequest2(api);
+    }
+
     protected void waitForPermit() {
         if(rateLimiter != null) {
             Utils.verbose("Waiting for ratelimiter to allow a request... (" + rateLimiter.getRate() + " reqs/s)");

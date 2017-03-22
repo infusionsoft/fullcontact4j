@@ -14,6 +14,7 @@ import com.fullcontact.api.libs.fullcontact4j.http.name.*;
 import com.fullcontact.api.libs.fullcontact4j.http.person.PersonRequest;
 
 import okhttp3.OkHttpClient;
+import retrofit.appengine.UrlFetchClient;
 import retrofit.client.Client;
 
 import java.io.InputStream;
@@ -193,6 +194,7 @@ public class FullContact {
         private String authKey;
         private Map<String, String> headers;
         private OkHttpClient httpClient = new OkHttpClient();
+        private Client client = null;
         private String userAgent = "";
         private String baseUrl = FCConstants.API_BASE_DEFAULT;
         private RateLimiterConfig rateLimiterConfig = RateLimiterConfig.SMOOTH;
@@ -211,6 +213,11 @@ public class FullContact {
          */
         public Builder httpClient(OkHttpClient client) {
             httpClient = client;
+            return this;
+        }
+
+        public Builder client(Client client) {
+            this.client = client;
             return this;
         }
 
@@ -299,13 +306,15 @@ public class FullContact {
                 throw new IllegalArgumentException("Authentication key cannot be null");
             }
             if(rateLimiterConfig == null || baseUrl == null || rateLimitExecutorService == null ||
-                userAgent == null || httpClient == null) {
+                userAgent == null || (httpClient == null && client == null)) {
                 throw new IllegalArgumentException("One of the builder parameters was null");
             }
 
-            return new FullContact(new FCUrlClient(userAgent, headers, httpClient, authKey), rateLimiterConfig, baseUrl, rateLimitExecutorService);
+            if (client != null) {
+                return new FullContact(new FCGAEUrlClient(userAgent, headers, client, authKey), rateLimiterConfig, baseUrl, rateLimitExecutorService);
+            } else {
+                return new FullContact(new FCUrlClient(userAgent, headers, httpClient, authKey), rateLimiterConfig, baseUrl, rateLimitExecutorService);
+            }
         }
     }
-
-
 }

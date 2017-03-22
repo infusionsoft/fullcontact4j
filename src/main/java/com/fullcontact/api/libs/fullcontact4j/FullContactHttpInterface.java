@@ -1,10 +1,14 @@
 package com.fullcontact.api.libs.fullcontact4j;
 
-import com.fullcontact.api.libs.fullcontact4j.enums.RateLimiterConfig;
-import com.fullcontact.api.libs.fullcontact4j.http.*;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fullcontact.api.libs.fullcontact4j.enums.RateLimiterConfig;
+import com.fullcontact.api.libs.fullcontact4j.http.FCCallback;
+import com.fullcontact.api.libs.fullcontact4j.http.FCRequest;
+import com.fullcontact.api.libs.fullcontact4j.http.FCRequestHandler;
+import com.fullcontact.api.libs.fullcontact4j.http.FCResponse;
+import com.fullcontact.api.libs.fullcontact4j.http.FCRetrofitCallback;
+import com.fullcontact.api.libs.fullcontact4j.http.RequestExecutorHandler;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
 import retrofit.converter.Converter;
@@ -48,7 +52,9 @@ public class FullContactHttpInterface {
 
         jsonConverter = new JacksonConverter(mapper);
         RestAdapter adapter = new RestAdapter.Builder().setEndpoint(baseUrl)
-                .setClient(httpClient).setConverter(jsonConverter).build();
+            .setClient(httpClient).setConverter(jsonConverter)
+            .setLogLevel(RestAdapter.LogLevel.NONE)
+            .build();
         fullContactApi = adapter.create(FullContactApi.class);
         this.baseUrl = baseUrl;
     }
@@ -57,14 +63,7 @@ public class FullContactHttpInterface {
      * Makes a request just like an async request, but uses a synchronous callback to do so.
      */
     public <T extends FCResponse> T sendRequest(FCRequest<T> req) throws FullContactException {
-        final FCCallback.SyncFCCallback<T> callback = new FCCallback.SyncFCCallback<T>();
-        sendRequest(req, callback);
-        try {
-            return callback.get();
-        } catch(InterruptedException e) {
-            e.printStackTrace();
-            throw new FullContactException("Interrupted while waiting for a result!", e);
-        }
+        return requestHandler.sendRequest(fullContactApi, req);
     }
 
     public <T extends FCResponse> void sendRequest(FCRequest<T> req, FCCallback<T> callback) {
