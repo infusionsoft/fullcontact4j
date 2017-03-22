@@ -69,25 +69,25 @@ public class FullContactClientTests {
         latch.await();
     }
 
-    @Test(timeout = 8000)
-    public void syncTest() throws Exception {
-        FullContact client = FullContact.withApiKey("bad-api-key").build();
-        client.httpInterface.setRequestHandler(
-            new MockRequestHandler(RateLimiterConfig.SMOOTH, Executors.newSingleThreadExecutor()));
-        //sync
-        for (int i = 0; i != REQUEST_AMOUNT; i++) {
-            final PersonRequest req = client.buildPersonRequest().email(UUID.randomUUID().toString()).build();
-            try {
-                PersonResponse res = client.sendRequest(req);
-                String reqID = res.getRequestId();
-                if (!reqID.equals(req.getParam(FCConstants.PARAM_PERSON_EMAIL))) {
-                    fail("Request ID from request and response did not match.");
-                }
-            } catch (FullContactException e) {
-                fail("Request threw an error");
-            }
-        }
-    }
+//    @Test(timeout = 8000)
+//    public void syncTest() throws Exception {
+//        FullContact client = FullContact.withApiKey("bad-api-key").build();
+//        client.httpInterface.setRequestHandler(
+//            new MockRequestHandler(RateLimiterConfig.SMOOTH, Executors.newSingleThreadExecutor()));
+//        //sync
+//        for (int i = 0; i != REQUEST_AMOUNT; i++) {
+//            final PersonRequest req = client.buildPersonRequest().email(UUID.randomUUID().toString()).build();
+//            try {
+//                PersonResponse res = client.sendRequest(req);
+//                String reqID = res.getRequestId();
+//                if (!reqID.equals(req.getParam(FCConstants.PARAM_PERSON_EMAIL))) {
+//                    fail("Request ID from request and response did not match.");
+//                }
+//            } catch (FullContactException e) {
+//                fail("Request threw an error");
+//            }
+//        }
+//    }
 
     @Test
     //make sure client parses FC errors properly
